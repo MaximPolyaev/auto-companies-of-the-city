@@ -1,0 +1,11 @@
+{
+  "autoload": {
+    "psr-4": {
+      "enterprices\\": "vendor/enterprices/core",
+      "app\\": "app"
+    }
+  },
+  "require": {
+    "gabordemooij/redbean": "dev-master"
+  }
+}

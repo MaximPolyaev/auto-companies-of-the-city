@@ -23,7 +23,7 @@ class ErrorHandler {
         error_log('[' . date('Y-m-d H:m:s') . '] Text error: ' . $msg . '| File: ' . $file . '| Line: ' . $line .
         "\n==================\n", 3, ROOT . '/tmp/errors.log');
     }
-
+    
     protected function displayError($err_number, $err_str, $err_file, $err_line, $response = 404) {
         http_response_code($response);
         if($response == 404 && !DEBUG) {

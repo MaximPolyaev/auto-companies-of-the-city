@@ -850,3 +850,5 @@
 ==================
 [2019-09-23 19:09:00] Text error: syntax error, unexpected '}'| File: D:\Server\htdocs\enterprices\app\controllers\AddDriverController.php| Line: 24
 ==================
+[2019-09-28 22:09:32] Text error: Page not found| File: D:\Server\htdocs\enterprices\vendor\enterprices\core\Router.php| Line: 41
+==================

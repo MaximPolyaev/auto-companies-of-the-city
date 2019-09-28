@@ -6,7 +6,6 @@ namespace enterprices;
 
 class Cache {
     use TSingleton;
-
     public function set($key, $data, $seconds = 3600) {
         if($seconds) {
             $content['data'] = $data;

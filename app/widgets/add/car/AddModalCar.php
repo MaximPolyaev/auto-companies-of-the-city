@@ -5,9 +5,12 @@ namespace app\widgets\add\car;
 
 
 use enterprices\App;
+use enterprices\SessionData;
 use RedBeanPHP\R;
 
 class AddModalCar {
+    private $sessionErrKey = 'err_add_car_modal';
+    protected $session;
     protected $controller;
     protected $action;
     protected $status;
@@ -16,6 +19,9 @@ class AddModalCar {
 
     public function __construct($route, $status = '') {
         $this->tpl = __DIR__ . '/car_tpl/car.php';
+
+        $this->session = SessionData::instance();
+
         $this->controller = $route['controller'] ?? null;
         $this->action = $route['action'] ?? null;
         if(!$status && $this->controller === 'Department' && $this->action) {
@@ -67,6 +73,25 @@ class AddModalCar {
         return R::findAll('car_marks', 'WHERE status = ?', [$this->status]);
     }
 
+    protected function getErrorsModal() {
+        $sessionData = $this->session->getSessionDataKey($this->sessionErrKey) ?? '';
+        if(!isset($sessionData['errors'])) {
+            return [];
+        }
+
+        $pageController = mb_strtolower($this->controller, 'UTF-8');
+        $pageAction = $this->action;
+        $errController = isset($sessionData['controller']) ? $sessionData['controller'] : '';
+        $errAction = isset($sessionData['action']) ? $sessionData['action'] : '';
+
+        if($pageController === $errController && $pageAction === $errAction) {
+            $this->session->clearSessionDataKey($this->sessionErrKey);
+            return $sessionData['errors'];
+        }
+
+        return [];
+    }
+
     protected function getModalHtml() {
         $id = $this->data['id'];
         $status = $this->status;
@@ -77,6 +102,7 @@ class AddModalCar {
             $bodyTypesCars[] = (object) $value;
         }
         $carMarks = $this->getCarMarks();
+        $errors = $this->getErrorsModal();
 
         ob_start();
         require $this->tpl;

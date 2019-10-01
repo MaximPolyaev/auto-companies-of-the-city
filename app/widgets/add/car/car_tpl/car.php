@@ -8,13 +8,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <?php foreach($errors as $error): ?>
+                        <?= messageBox($error) ?>
+                    <?php endforeach; ?>
                     <form id="<?= $id ?>_form" action="add-car/<?= $status ?>" method="GET" data-status="<?= $status ?>">
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Гос. номер:</div>
                                 </div>
-                                <input class="form-control" type="text" placeholder="A777AA77">
+                                <input class="form-control" type="text" placeholder="A777AA77" name="govnum">
                             </div>
                         </div>
                         <div class="form-group form-input-car">
@@ -22,7 +25,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Марка:</div>
                                 </div>
-                                <select class="custom-select form-control">
+                                <select class="custom-select form-control" name="mark">
                                     <option selected value="no">Не выбрано</option>
                                     <?php foreach($carMarks as $mark): ?>
                                         <option value="<?= $mark->name_alias ?>"><?= $mark->name ?></option>
@@ -58,8 +61,8 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Год выпуска:</div>
                                 </div>
-                                <select class="custom-select form-control select-year-car">
-                                    <option selected>Не выбрано</option>
+                                <select class="custom-select form-control select-year-car" name="year">
+                                    <option selected value="no">Не выбрано</option>
                                 </select>
                             </div>
                         </div>
@@ -68,7 +71,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Пробег (км):</div>
                                 </div>
-                                <input class="form-control" type="text">
+                                <input class="form-control" type="text" name="mileage">
                             </div>
                         </div>
                     </form>

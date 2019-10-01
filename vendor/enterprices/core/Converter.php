@@ -5,7 +5,6 @@ namespace enterprices;
 
 
 class Converter {
-    // TASK: Convert phone to dbPhone
     public static function toDbDate($date) {
         $regexp = '/^(\d{2})-(\d{2})-(\d{4})$/iu';
         $replacement = '${3}-${2}-${1}';

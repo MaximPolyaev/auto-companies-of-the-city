@@ -5,6 +5,7 @@ namespace enterprices;
 
 
 class Validator {
+    // TASK: create method checkYear
     public static function checkPhone($phone) {
         $regexp = '/^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/iu';
         return preg_match($regexp, $phone);

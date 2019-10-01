@@ -46,7 +46,7 @@
                                                 <p class="card-text my-1">Всего рейсов: <b><?= $driver->number_flights ?></b></p>
                                                 <p class="card-text my-1">Номер телефона:&nbsp;
                                                     <?php if($driver->number_phone): ?>
-                                                        <a class="text-dark" href="tel:+7<?= $driver->number_phone ?>">
+                                                        <a class="text-dark" href="tel:+<?= $driver->number_phone ?>">
                                                             <b><?= $driver->phone_render ?></b><i class="fas fa-phone"></i>
                                                         </a>
                                                     <?php else: ?>

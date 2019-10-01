@@ -5,9 +5,7 @@ namespace app\models;
 
 
 use enterprices\App;
-use enterprices\base\View;
 use enterprices\Converter;
-use enterprices\SessionData;
 use enterprices\Validator;
 
 class AddDriverModel extends AppModel {
@@ -18,9 +16,9 @@ class AddDriverModel extends AppModel {
     private $modalPages = [];
 
     public function __construct() {
-        $this->modalPages = App::$app->getProperty('add_driver_modal_pages');
+        $this->modalPages = App::$app->getProperty('add_modal_pages');
         $this->prevPage = $_SERVER['HTTP_REFERER'] ?? '';
-        $this->prevRouting = $this->getPrevRouting();
+        $this->prevRouting = self::getPrevRouting($this->prevPage);
     }
 
     public function dataInit() {
@@ -100,17 +98,6 @@ class AddDriverModel extends AppModel {
 
     public function getPrevPage() {
         return $this->prevPage;
-    }
-
-    private function getPrevRouting() {
-        $regexp = '/(?P<controller>[a-z]+)\/(?P<action>[a-z0-9]+)$/iu';
-        preg_match($regexp, $this->prevPage, $matches);
-        $prevController = isset($matches['controller']) ? $matches['controller'] : '';
-        $prevAction = isset($matches['action']) ? $matches['action'] : '';
-        return [
-            'controller' => $prevController,
-            'action' => $prevAction
-        ];
     }
 
     private function errorListInit() {

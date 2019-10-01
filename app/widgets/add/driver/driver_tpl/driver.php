@@ -40,7 +40,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Дата рождения:</div>
                             </div>
-                            <input class="form-control d-inline-block bg-white cp" id="dateAgeUser" type="text" autocomplete="off" readonly name="ageuser">
+                            <input class="form-control d-inline-block bg-white cp" id="dateAgeUser" type="text" autocomplete="off" readonly name="birthday">
                         </div>
                     </div>
                     <div class="form-group form-group_gender">

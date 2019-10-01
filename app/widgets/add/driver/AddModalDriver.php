@@ -7,6 +7,7 @@ namespace app\widgets\add\driver;
 use enterprices\SessionData;
 
 class AddModalDriver {
+    private $sessionErrKey = 'err_add_driver_modal';
     protected $controller;
     protected $session;
     protected $action;
@@ -50,7 +51,7 @@ class AddModalDriver {
     }
 
     protected function getErrorsModal() {
-        $sessionData = $this->session->getSessionDataKey('err_modal') ?? '';
+        $sessionData = $this->session->getSessionDataKey($this->sessionErrKey) ?? '';
         if(!isset($sessionData['errors'])) {
             return [];
         }
@@ -61,7 +62,7 @@ class AddModalDriver {
         $errAction = isset($sessionData['action']) ? $sessionData['action'] : '';
 
         if($pageController === $errController && $pageAction === $errAction) {
-            $this->session->clearSessionDataKey('err_modal');
+            $this->session->clearSessionDataKey($this->sessionErrKey);
             return $sessionData['errors'];
         }
 

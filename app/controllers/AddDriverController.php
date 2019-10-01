@@ -9,70 +9,79 @@ use enterprices\SessionData;
 use RedBeanPHP\R;
 
 class AddDriverController extends AppController {
+    private $tableName = 'drivers';
+    private $sessionErrKey = 'err_add_driver_modal';
     private $session;
     private $addDriver;
-    private $prevController;
-    private $prevAction;
+    private $errorList;
 
     public function __construct($route) {
         parent::__construct($route);
         $this->addDriver = new AddDriverModel();
-        // start init code in AddDriverModal
         $this->session = SessionData::instance();
-        $prevPage = $_SERVER['HTTP_REFERER'] ?? '';
-        $regexp = '/(?P<controller>[a-z]+)\/(?P<action>[a-z0-9]+)$/iu';
-        preg_match($regexp, $prevPage, $matches);
-        $this->prevController = isset($matches['controller']) ? $matches['controller'] : '';
-        $this->prevAction = isset($matches['action']) ? $matches['action'] : '';
-        // end init code in AddDriverModal
     }
 
     public function taxiAction() {
-        // start new code
-        $this->addDriver->dataInit();
-        // end new code
-
-
-        $addError = [
-            'controller' => $this->prevController,
-            'action' => $this->prevAction
-        ];
-        $drivers = R::dispense('drivers');
-        $drivers->surnames = $_GET['surname'];
-        $drivers->name = $_GET['name'];
-        $drivers->patronymic = $_GET['patronymic'];
-        $drivers->birthday = $_GET['ageuser'];
-        $drivers->date_experience = $_GET['experience'];
-        $drivers->number_phone = $_GET['phone'];
-        $drivers->address = $_GET['address'];
-        $drivers->position = 'driver_taxid';
-        $drivers->gender = isset($_GET['gender']) ? $_GET['gender'] : '';
-
-
-        R::begin();
-        try {
-            R::store($drivers);
-            R::commit();
-        } catch(\Exception $e) {
-            R::rollback();
-            if(DEBUG) {
-                echo "<h4>Ошибка! {$e->getMessage()}</h4>";
-                die;
-            } else {
-                $addError['errors'][] = 'Сервер временно не работает. Попробуйте позже!';
-                $this->session->setSessionDataKey('err_modal', $addError);
-                redirect();
-            }
+        if($this->addDriver->dataInit()) {
+            $data = $this->addDriver->getData();
+            $this->dataSend($data);
+        } else {
+            $this->errorList = $this->addDriver->getErrorList();
+            $this->session->setSessionDataKey($this->sessionErrKey, $this->errorList);
+            redirect($this->addDriver->getPrevPage());
         }
-        $this->session->clearSessionDataKey('err_modal');
-        redirect();
     }
 
     public function truckAction() {
-        redirect();
+        if($this->addDriver->dataInit()) {
+            $data = $this->addDriver->getData();
+            $this->dataSend($data);
+        } else {
+            $this->errorList = $this->addDriver->getErrorList();
+            $this->session->setSessionDataKey($this->sessionErrKey, $this->errorList);
+            redirect($this->addDriver->getPrevPage());
+        }
     }
 
     public function busAction() {
-        redirect();
+        if($this->addDriver->dataInit()) {
+            $data = $this->addDriver->getData();
+            $this->dataSend($data);
+        } else {
+            $this->errorList = $this->addDriver->getErrorList();
+            $this->session->setSessionDataKey($this->sessionErrKey, $this->errorList);
+            redirect($this->addDriver->getPrevPage());
+        };
+    }
+
+    private function dataSend($data) {
+        $table = R::dispense($this->tableName);
+
+        foreach($data as $key => $value) {
+            $table->$key = $value;
+        }
+
+        R::begin();
+        try {
+            R::store($table);
+            R::commit();
+        } catch(\Exception $e) {
+            R::rollback();
+            $this->errorMessage($e);
+        }
+        $this->session->clearSessionDataKey($this->sessionErrKey);
+        redirect($this->addDriver->getPrevPage());
+    }
+
+    private function errorMessage($e) {
+        if(DEBUG) {
+            echo "<h4>Ошибка! {$e->getMessage()}</h4>";
+            die;
+        } else {
+            $this->errorList = $this->addDriver->getErrorList();
+            $this->errorList['errors'][] = 'Сервер временно не работает. Попробуйте позже!';
+            $this->session->setSessionDataKey($this->sessionErrKey, $this->errorList);
+            redirect($this->addDriver->getPrevPage());
+        }
     }
 }

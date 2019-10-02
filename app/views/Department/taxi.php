@@ -231,8 +231,12 @@
                                             <hr class="m-0">
                                             <div class="card-body card-driver-body py-2">
                                                 <p class="card-text my-1">Гос. номер: <b><?= $car->gov_num ?></b></p>
-                                                <p class="card-text my-1">Тип кузова: <b>седан</b></p>
-                                                <p class="card-text my-1">Цвет: <b><?= $car->color ?? 'нет данных' ?></b></p>
+                                                <?php if(!empty($car->body_type)): ?>
+                                                    <p class="card-text my-1">Тип кузова: <b><?= $car->body_type ?></b></p>
+                                                <?php endif; ?>
+                                                <?php if(!empty($car->color)): ?>
+                                                    <p class="card-text my-1">Цвет: <b><?= $car->color ?></b></p>
+                                                <?php endif; ?>
                                                 <p class="card-text my-1">Пробег: <b><?= $car->mileage ?> км</b></p>
                                                 <p class="card-text my-1">Всего рейсов: <b><?= $car->number_flights ?></b></p>
                                                 <p class="card-text my-1">Год выпуска: <b><?= $car->create_year ?></b></p>

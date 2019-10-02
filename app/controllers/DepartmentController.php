@@ -69,8 +69,44 @@ class DepartmentController extends AppController {
         $cars = R::getAssoc('SELECT * FROM `cars` WHERE position = ? and repair = 0', ['car_' . $this->view]);
         foreach($cars as $key => &$car) {
             $car['id'] = $key;
+            $car['brand'] = $this->getCarBrand($car['brand']);
+            $car['model'] = $this->getCarModel($car['model']);
+            if($this->view === 'taxi') {
+                $car['body_type'] = $this->getCarBodyType($key);
+            }
+            if($this->view === 'truck') {
+                $car['carrying'] = $this->getTruckCarrying($key);
+            }
+            if($this->view === 'bus') {
+                $car['capacity'] = $this->getBusCapacity($key);
+            }
             $car = (object) $car;
         }
         return $cars;
+    }
+
+    private function getCarBodyType($id) {
+        $bodyType = R::findOne('body_types_cars', ' id = ?', [$id]);
+        return isset($bodyType->name) ? $bodyType->name : '';
+    }
+
+    private function getCarBrand($id) {
+        $carBrand = R::findOne('car_marks', ' id = ?', [$id]);
+        return isset($carBrand->name) ? $carBrand->name : '';
+    }
+
+    private function getCarModel($id) {
+        $carModel = R::findOne('car_models', ' id = ?', [$id]);
+        return isset($carModel->name) ? $carModel->name : '';
+    }
+
+    private function getTruckCarrying($id) {
+        $carrying = R::findOne('carstruck', ' id_car = ?', [$id]);
+        return isset($carrying->carrying) ? $carrying->carrying : '';
+    }
+
+    private function getBusCapacity($id) {
+        $bus = R::findOne('carsbus', ' id_car = ?', [$id]);
+        return isset($bus->capacity) ? $bus->capacity : '';
     }
 }

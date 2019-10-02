@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "073be70a338864d6da9cc76d10fc0a44",
+    "content-hash": "2f3e09c450e21e2ff6873a8b2d36be56",
     "packages": [
         {
             "name": "gabordemooij/redbean",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gabordemooij/redbean.git",
-                "reference": "d1491a6ba5d8b5d7c2171e575101e53ecb17976a"
+                "reference": "931e4fa3d957a29fa2f67c543255f9fc1603fe0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/d1491a6ba5d8b5d7c2171e575101e53ecb17976a",
-                "reference": "d1491a6ba5d8b5d7c2171e575101e53ecb17976a",
+                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/931e4fa3d957a29fa2f67c543255f9fc1603fe0e",
+                "reference": "931e4fa3d957a29fa2f67c543255f9fc1603fe0e",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
             "keywords": [
                 "orm"
             ],
-            "time": "2019-08-29T06:57:35+00:00"
+            "time": "2019-09-24T20:36:43+00:00"
         }
     ],
     "packages-dev": [],
@@ -56,6 +56,8 @@
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-mbstring": "*"
+    },
     "platform-dev": []
 }

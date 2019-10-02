@@ -7,7 +7,7 @@
                     <li>Название маршрута: <b><?= $routeData->name ?></b></li>
                     <li>Конечные остановки: <b><?= $routeData->short_desc ?? 'Информация отсутствует' ?></b></li>
                     <li>Маршрут следования: <?= $routeData->desc ?? 'Информация отсутствует' ?></li>
-                </ul><a class="btn btn-danger" href="/">Удалить маршрут</a>
+                </ul><a class="btn btn-danger" href="del-route?name=<?=$routeData->name_alias?>">Удалить маршрут</a>
             <?php else: ?>
                 <h4>Информация о маршруте отсутствует!</h4>
             <?php endif; ?>

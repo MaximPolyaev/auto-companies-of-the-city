@@ -43,7 +43,7 @@ class DepartmentController extends AppController {
     public function busAction() {
         $this->setMeta('Автобусный отдел');
 
-        $busRoutes = R::findAll('bus_routes');
+        $busRoutes = R::findAll('busroutes');
 
         $this->set(compact('busRoutes'));
     }

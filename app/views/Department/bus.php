@@ -378,14 +378,18 @@
                         <?php endif; ?>
                         <div class="row border-top">
                             <div class="col-xl-6 col-lg-7 col-md-9">
-                                <form>
+                                <form action="add-route" method="GET">
                                     <div class="form-group">
                                         <label for="titleRoute">Название маршрута:</label>
-                                        <input class="form-control" id="titleRoute" type="text">
+                                        <input class="form-control" id="titleRoute" type="text" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="descriptionRoute">Конечные остановки:</label>
+                                        <textarea class="form-control" id="descriptionRoute" name="shortdesc"></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="descriptionRoute">Маршрут следования:</label>
-                                        <textarea class="form-control" id="descriptionRoute"></textarea>
+                                        <textarea class="form-control" id="descriptionRoute" name="desc"></textarea>
                                     </div>
                                     <button class="btn btn-success" type="submit">Добавить маршрут</button>
                                 </form>

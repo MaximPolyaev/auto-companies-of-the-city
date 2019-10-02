@@ -27,7 +27,7 @@ class AddDriverModel extends AppModel {
             return false;
         }
 
-        if(Validator::checkDriverPosition($this->prevRouting['action'])) {
+        if(Validator::isPosition($this->prevRouting['action'])) {
             $this->data['position'] = 'driver_' . $this->prevRouting['action'];
         } else {
             $this->errorList['errors'][] = 'Запрос был отправлен некорректно';
@@ -51,25 +51,25 @@ class AddDriverModel extends AppModel {
             $this->errorList['errors'][] = 'Вы забыли ввести отчество';
         }
 
-        if(Validator::checkDateFormat(isset($_GET['birthday']) ? $_GET['birthday'] : '')) {
+        if(Validator::isDate(isset($_GET['birthday']) ? $_GET['birthday'] : '')) {
             $this->data['birthday'] = Converter::toDbDate($_GET['birthday']);
         } else {
             $this->errorList['errors'][] = 'Дата введена некорректно';
         }
 
-        if(Validator::checkGender(isset($_GET['gender']) ? $_GET['gender'] : '')) {
+        if(Validator::isGender(isset($_GET['gender']) ? $_GET['gender'] : '')) {
             $this->data['gender'] = $_GET['gender'];
         } else {
             $this->errorList['errors'][] = 'Выбирите пол';
         }
 
-        if(Validator::checkWorkExperience(isset($_GET['experience']) ? $_GET['experience'] : '')) {
+        if(Validator::isWorkExperience(isset($_GET['experience']) ? $_GET['experience'] : '')) {
             $this->data['date_experience'] = $_GET['experience'];
         } else {
             $this->errorList['errors'][] = 'Стаж работы введен некорректно';
         }
 
-        if(Validator::checkPhone(isset($_GET['phone']) ? $_GET['phone'] : '')) {
+        if(Validator::isPhone(isset($_GET['phone']) ? $_GET['phone'] : '')) {
             $this->data['number_phone'] = Converter::toDbPhone($_GET['phone']);
         } else {
             $this->errorList['errors'][] = 'Введен некоректный номер телефоа';

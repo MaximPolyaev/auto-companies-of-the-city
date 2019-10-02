@@ -5,29 +5,33 @@ namespace enterprices;
 
 
 class Validator {
-    // TASK: create method checkYear
-    public static function checkPhone($phone) {
+    public static function isPhone($phone) {
         $regexp = '/^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/iu';
         return preg_match($regexp, $phone);
     }
 
-    public static function checkDriverPosition($position) {
+    public static function isPosition($position) {
         $regexp = '/^((taxi)|(truck)|(bus))$/iu';
         return (preg_match($regexp, $position));
     }
 
-    public static function checkDateFormat($date) {
+    public static function isDate($date) {
         $regexp = '/^\d{2}-\d{2}-\d{4}$/iu';
         return preg_match($regexp, $date);
     }
 
-    public static function checkGender($gender) {
+    public static function isGender($gender) {
         $regexp = '/^((male)|(female))$/iu';
         return preg_match($regexp, $gender);
     }
 
-    public static function checkWorkExperience($number) {
+    public static function isWorkExperience($number) {
         $regexp = '/^\d{1,2}$/iu';
         return preg_match($regexp, $number);
+    }
+
+    public static function isYear($year) {
+        $regexp = '/^\d{4}$/iu';
+        return preg_match($regexp, $year);
     }
 }

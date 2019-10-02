@@ -43,7 +43,6 @@ class AddCarController extends AppController {
         $this->render();
     }
 
-    // TASK: create method dataSend
     private function dataSend($data) {
         $cars = R::dispense('cars');
         $carsColumns = $this->getTableColumns('cars');
@@ -90,7 +89,6 @@ class AddCarController extends AppController {
         redirect($this->addCar->getPrevPage());
     }
 
-    // TASK: edit method errorMessage
     private function errorMessage($e) {
         if(DEBUG) {
             echo "<h4>Ошибка! {$e->getMessage()}</h4>";

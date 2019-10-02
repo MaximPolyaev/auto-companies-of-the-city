@@ -106,8 +106,6 @@ class AddCarModel extends AppModel {
         return true;
     }
 
-
-    // WARNING: do not edit methods getData, getErrorList, getPrevPage, errorListInit
     public function getData() {
         return $this->data;
     }

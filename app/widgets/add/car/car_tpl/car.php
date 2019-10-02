@@ -47,6 +47,24 @@
                                     </select>
                                 </div>
                             </div>
+                        <?php elseif($status === 'truck'): ?>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Грузоподъемность (0-99 т.):</div>
+                                    </div>
+                                    <input type="text" class="form-control" name="carrying">
+                                </div>
+                            </div>
+                        <?php elseif($status === 'bus'): ?>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Вместительность (0-99 чел.):</div>
+                                    </div>
+                                    <input type="text" class="form-control" name="capacity">
+                                </div>
+                            </div>
                         <?php endif; ?>
                         <div class="form-group">
                             <div class="input-group">

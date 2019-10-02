@@ -21,7 +21,7 @@
             <h6>Debug:</h6>
             <?php
 
-                //debug(\enterprices\Converter::toPhone('+7 (920) 917-42-35'));
+//                phpinfo();
 
             ?>
         </div>

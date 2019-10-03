@@ -31,6 +31,13 @@ class DepartmentController extends AppController {
             $this->set(compact('modificator'));
         }
 
+        // if isAjax query
+        if(!$this->isAjax()) {
+            debug('isAjax');
+            die;
+        }
+
+
         // Add modals windows on page
         $addModalDriver = (new AddModalDriver($this->route))->getData();
         $addModalCar = (new AddModalCar($this->route))->getData();

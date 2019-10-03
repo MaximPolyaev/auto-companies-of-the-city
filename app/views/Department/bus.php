@@ -115,8 +115,8 @@
                                 <div class="form-group">
                                     <h6 class="mb-0 cp">Возраст:</h6>
                                     <input class="form-control form-control-sm mt-1" name="age" id="age">
-                                    <div class="mx-2 mt-2 cp" id="slider-range-age" data-min="14" data-max="100" data-start="14"
-                                         data-end="100"></div>
+                                    <div class="mx-2 mt-2 cp" id="slider-range-age" data-min="<?= $parametersDrivers->age_interval['min'] ?>" data-max="<?= $parametersDrivers->age_interval['max'] ?>" data-start="<?= $parametersDrivers->age_interval['min'] ?>"
+                                         data-end="<?= $parametersDrivers->age_interval['max'] ?>"></div>
                                 </div>
                                 <div class="form-group form-group_gender">
                                     <h6 class="mb-0 us-none">Пол:</h6>
@@ -155,8 +155,8 @@
                                 <div class="form-group">
                                     <h6 class="mb-0 us-none">Стаж работы (лет):</h6>
                                     <input class="form-control form-control-sm mt-1" name="experience" id="experience">
-                                    <div class="mx-2 mt-2 cp" id="slider-range-experience" data-min="0" data-max="150" data-start="0"
-                                         data-end="150"></div>
+                                    <div class="mx-2 mt-2 cp" id="slider-range-experience" data-min="<?= $parametersDrivers->work_experience['min'] ?>" data-max="<?= $parametersDrivers->work_experience['max'] ?>" data-start="<?= $parametersDrivers->work_experience['min'] ?>"
+                                         data-end="<?= $parametersDrivers->work_experience['max'] ?>"></div>
                                 </div>
                                 <div class="form-group">
                                     <h6 class="mb-0 us-none">Вместительность (чел.):</h6>
@@ -310,10 +310,22 @@
                                     <button class="btn btn-info btn-add-group-car btn-sm" type="button">Добавить</button>
                                 </div>
                                 <div class="form-group">
+                                    <h6 class="mb-1 us-none">Цвет машины:</h6>
+                                    <select class="custom-select" name="color">
+                                        <option selected>Не выбрано</option>
+                                        <?php foreach($parametersCars->colors as $color): ?>
+                                            <option value="<?= $color ?>"><?= mb_ucfirst($color) ?></option>
+                                        <?php endforeach; ?>
+                                        <option value="absent">Отсутствует</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <h6 class="mb-0 cp">Пробег (км):</h6>
                                     <input class="form-control form-control-sm mt-1" name="mileage" id="mileage">
-                                    <div class="mx-2 mt-2 cp" id="slider-range-mileage" data-min="0" data-max="150000" data-start="0"
-                                         data-end="150000"></div>
+                                    <div class="mx-2 mt-2 cp" id="slider-range-mileage" data-min="<?= $parametersCars->mileage['min'] ?>"
+                                         data-max="<?= $parametersCars->mileage['max'] ?>"
+                                         data-start="<?= $parametersCars->mileage['min'] ?>"
+                                         data-end="<?= $parametersCars->mileage['max'] ?>"></div>
                                 </div>
                                 <div class="form-group">
                                     <h6 class="mb-0 us-none">Кол-во рейсов:</h6>
@@ -346,9 +358,11 @@
                                 </div>
                                 <div class="form-group">
                                     <h6 class="mb-0 us-none">Год выпуска:</h6>
-                                    <input class="form-control form-control-sm mt-1" name="yearCar" id="yearCar">
-                                    <div class="mx-2 mt-2 cp" id="slider-range-yearCar" data-min="1970" data-max="2016" data-start="1970"
-                                         data-end="2016"></div>
+                                    <input class="form-control form-control-sm mt-1" name="year" id="yearCar">
+                                    <div class="mx-2 mt-2 cp" id="slider-range-yearCar" data-min="<?= $parametersCars->year['min'] ?>"
+                                         data-max="<?= $parametersCars->year['max'] ?>"
+                                         data-start="<?= $parametersCars->year['min'] ?>"
+                                         data-end="<?= $parametersCars->year['max'] ?>"></div>
                                 </div>
                                 <div class="form-group">
                                     <h6 class="mb-0 us-none">Запрос</h6>

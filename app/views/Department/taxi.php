@@ -219,7 +219,7 @@
                         <hr class="mt-0">
                         <div class="row">
                             <!-- add cars taxi -->
-                            <?php if(!$cars) : ?>
+                            <?php if($cars) : ?>
                                 <?php foreach($cars as $car): ?>
                                     <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3 justify-content-sm-center">
                                         <div class="card card-driver border-secondary">
@@ -310,7 +310,6 @@
                                 <div class="col-12">
                                     <h2>Машины отсутствуют</h2>
                                 </div>
-                                <?php debug($parametersCars); ?>
                             <?php endif; ?>
                             <!-- end add cars taxi -->
                         </div>

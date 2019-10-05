@@ -32,7 +32,7 @@ class DepartmentController extends AppController {
         }
 
         // if isAjax query
-        if(!$this->isAjax()) {
+        if($this->isAjax()) {
             debug('isAjax');
             die;
         }

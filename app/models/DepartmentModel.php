@@ -56,7 +56,7 @@ class DepartmentModel extends AppModel {
         $parametersCars = [];
         if($this->view === 'taxi') {
             $bodyTypes = R::getAll(
-                'SELECT body_t.name, body_t.name_alias 
+                'SELECT body_t.name, body_t.name_alias
                         FROM body_types_cars as body_t, carstaxi
                         WHERE body_t.id = carstaxi.id_type_body
                         GROUP BY body_t.name, body_t.name_alias
@@ -89,18 +89,21 @@ class DepartmentModel extends AppModel {
         }
 
         $parametersCars['colors'] = array_unique($colors);
+        $mileage['min'] = $mileage['min'] ? $mileage['min'] : 0;
+        $mileage['max'] = $mileage['max'] ? $mileage['max'] : 0;
         $parametersCars['mileage'] = $mileage;
         $parametersCars['year'] = $year;
-
 
         $brands = R::getAll('select brand from cars where position = ?', ['car_' . $this->view]);
         foreach($brands as $key => $value) {
             $brands[$key] = $value['brand'];
         }
         $brands = implode(',', array_unique($brands));
+
         $brands = R::getAll("select * from car_marks where id in (${brands})");
 
         $parametersCars['brands'] = $brands;
+
 
         $this->parametersCars = (object) $parametersCars;
     }

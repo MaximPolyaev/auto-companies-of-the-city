@@ -299,11 +299,11 @@
                                     <h6 class="mb-0 us-none">Выбор машины:</h6>
                                     <div class="form-group-car">
                                         <hr class="my-1">
-                                        <select class="custom-select form-group-car_select select-car_mark" name="carMarka1">
-                                            <option selected>Не выбрано</option>
-                                            <option value="alias1">Рено</option>
-                                            <option value="alias2">Лада</option>
-                                            <option value="alias3">Аиди</option>
+                                        <select class="custom-select form-group-car_select select-car_mark" name="mark">
+                                            <option selected value="no">Не выбрано</option>
+                                            <?php foreach($parametersCars->brands as $brand):?>
+                                                <option value="<?= $brand['name_alias'] ?>"><?= mb_ucfirst($brand['name']) ?></option>
+                                            <?php endforeach; ?>
                                         </select>
                                         <hr class="my-1">
                                     </div>

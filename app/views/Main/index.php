@@ -5,7 +5,7 @@
                 <h3 class="card-header">Отдел такси <i class="fas fa-taxi"></i></h3>
                 <div class="card-body">
                     <p class="card-text">Всего рабочих: <b><?= $numberDrivers->driver_taxi ?></b> <i class="fas fa-user"></i></p>
-                    <p class="card-text">Всего машин: <b>23</b> <i class="fas fa-car"></i></p>
+                    <p class="card-text">Всего машин: <b><?= $numberCars->car_taxi ?></b> <i class="fas fa-car"></i></p>
                 </div>
                 <div class="card-footer"><a class="card-link text-dark" href="department/taxi"><i class="fas fa-arrow-circle-right"></i> Подробнее</a></div>
             </div>
@@ -15,7 +15,7 @@
                 <h3 class="card-header">Отдел грузового ТС <i class="fas fa-truck"></i></h3>
                 <div class="card-body">
                     <p class="card-text">Всего рабочих: <b><?= $numberDrivers->driver_truck ?></b> <i class="fas fa-user"></i></p>
-                    <p class="card-text">Всего машин: <b>21</b> <i class="fas fa-car"></i></p>
+                    <p class="card-text">Всего машин: <b><?= $numberCars->car_truck ?></b> <i class="fas fa-car"></i></p>
                 </div>
                 <div class="card-footer"><a class="card-link text-white" href="department/truck"><i class="fas fa-arrow-circle-right"></i> Подробнее</a></div>
             </div>
@@ -25,7 +25,7 @@
                 <h3 class="card-header">Автобусный отдел <i class="fas fa-bus"></i></h3>
                 <div class="card-body">
                     <p class="card-text">Всего рабочих: <b><?= $numberDrivers->driver_bus ?></b> <i class="fas fa-user"></i></p>
-                    <p class="card-text">Всего машин: <b>54</b> <i class="fas fa-car"></i></p>
+                    <p class="card-text">Всего машин: <b><?= $numberCars->car_bus ?></b> <i class="fas fa-car"></i></p>
                 </div>
                 <div class="card-footer"><a class="card-link text-white" href="department/bus"><i class="fas fa-arrow-circle-right"></i> Подробнее</a></div>
             </div>

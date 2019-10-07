@@ -116,11 +116,10 @@
                         <div class="taxi-drivers-param params-panel p-2 border rounded">
                             <h5 class="text-info us-none">Параметры</h5>
                             <form class="params-panel-form" method="GET">
-                                <div class="form-group">
+                                <div class="form-group slider-range">
                                     <h6 class="mb-0 cp">Возраст:</h6>
-                                    <input class="form-control form-control-sm mt-1" name="age" id="age">
-                                    <div class="mx-2 mt-2 cp" id="slider-range-age" data-min="<?= $parametersDrivers->age_interval['min'] ?>" data-max="<?= $parametersDrivers->age_interval['max'] ?>" data-start="<?= $parametersDrivers->age_interval['min'] ?>"
-                                         data-end="<?= $parametersDrivers->age_interval['max'] ?>"></div>
+                                    <input class="form-control form-control-sm mt-1 slider-range-input" name="age">
+                                    <div class="mx-2 mt-2 cp slider-range-controls" data-min="<?= $parametersDrivers->age_interval['min'] ?>" data-max="<?= $parametersDrivers->age_interval['max'] ?>"></div>
                                 </div>
                                 <div class="form-group form-group_gender">
                                     <h6 class="mb-0 us-none">Пол:</h6>
@@ -133,11 +132,10 @@
                                         <input class="form-check-input cp" id="femaleCheckbox" type="checkbox" value="female" name="gender">
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group slider-range">
                                     <h6 class="mb-0 us-none">Кол-во рейсов:</h6>
-                                    <input class="form-control form-control-sm mt-1" name="flights" id="flights">
-                                    <div class="mx-2 mt-2 cp" id="slider-range-flights" data-min="1" data-max="150" data-start="1"
-                                         data-end="150"></div>
+                                    <input class="form-control form-control-sm mt-1 slider-range-input" name="flights">
+                                    <div class="mx-2 mt-2 cp slider-range-controls" data-min="1" data-max="150"></div>
                                 </div>
                                 <div class="form-group">
                                     <h6 class="mb-0 us-none">Дата рейса:</h6>
@@ -156,11 +154,10 @@
                                                autocomplete="off" readonly>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group slider-range">
                                     <h6 class="mb-0 us-none">Стаж работы (лет):</h6>
-                                    <input class="form-control form-control-sm mt-1" name="experience" id="experience">
-                                    <div class="mx-2 mt-2 cp" id="slider-range-experience" data-min="<?= $parametersDrivers->work_experience['min'] ?>" data-max="<?= $parametersDrivers->work_experience['max'] ?>" data-start="<?= $parametersDrivers->work_experience['min'] ?>"
-                                         data-end="<?= $parametersDrivers->work_experience['max'] ?>"></div>
+                                    <input class="form-control form-control-sm mt-1 slider-range-input" name="experience">
+                                    <div class="mx-2 mt-2 cp slider-range-controls" data-min="<?= $parametersDrivers->work_experience['min'] ?>" data-max="<?= $parametersDrivers->work_experience['max'] ?>"></div>
                                 </div>
                                 <div class="form-group">
                                     <h6 class="mb-0 us-none">Выбор машины:</h6>
@@ -355,20 +352,17 @@
                                         <option value="absent">Отсутствует</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group slider-range">
                                     <h6 class="mb-0 cp">Пробег (км):</h6>
-                                    <input class="form-control form-control-sm mt-1" name="mileage" id="mileage">
-                                    <div class="mx-2 mt-2 cp" id="slider-range-mileage"
+                                    <input class="form-control form-control-sm mt-1 slider-range-input" name="mileage">
+                                    <div class="mx-2 mt-2 cp slider-range-controls"
                                          data-min="<?= $parametersCars->mileage['min'] ?>"
-                                         data-max="<?= $parametersCars->mileage['max'] ?>"
-                                         data-start="<?= $parametersCars->mileage['min'] ?>"
-                                         data-end="<?= $parametersCars->mileage['max'] ?>"></div>
+                                         data-max="<?= $parametersCars->mileage['max'] ?>"></div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group slider-range">
                                     <h6 class="mb-0 us-none">Кол-во рейсов:</h6>
-                                    <input class="form-control form-control-sm mt-1" name="carFlights" id="carFlights">
-                                    <div class="mx-2 mt-2 cp" id="slider-range-carFlights" data-min="1" data-max="150" data-start="1"
-                                         data-end="150"></div>
+                                    <input class="form-control form-control-sm mt-1 slider-range-input" name="carFlights">
+                                    <div class="mx-2 mt-2 cp slider-range-controls" data-min="1" data-max="150"></div>
                                 </div>
                                 <div class="form-group">
                                     <h6 class="mb-0 us-none">Дата рейса:</h6>
@@ -387,13 +381,11 @@
                                                autocomplete="off" readonly>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group slider-range">
                                     <h6 class="mb-0 us-none">Год выпуска:</h6>
-                                    <input class="form-control form-control-sm mt-1" name="year" id="yearCar">
-                                    <div class="mx-2 mt-2 cp" id="slider-range-yearCar" data-min="<?= $parametersCars->year['min'] ?>"
-                                         data-max="<?= $parametersCars->year['max'] ?>"
-                                         data-start="<?= $parametersCars->year['min'] ?>"
-                                         data-end="<?= $parametersCars->year['max'] ?>"></div>
+                                    <input class="form-control form-control-sm mt-1 slider-range-input" name="year">
+                                    <div class="mx-2 mt-2 cp slider-range-controls" data-min="<?= $parametersCars->year['min'] ?>"
+                                         data-max="<?= $parametersCars->year['max'] ?>"></div>
                                 </div>
                                 <div class="form-group">
                                     <h6 class="mb-0 us-none">Запрос</h6>

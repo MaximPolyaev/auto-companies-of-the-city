@@ -65,6 +65,20 @@ class DepartmentModel extends AppModel {
             $parametersCars['body_types'] = $bodyTypes;
         }
 
+        if($this->view === 'truck') {
+            $carrying = R::getRow(
+                'select min(`carrying`) as min, max(`carrying`) as max from carstruck'
+            );
+            $parametersCars['carrying'] = $carrying;
+        }
+
+        if($this->view === 'bus') {
+            $capacity = R::getRow(
+                'select min(`capacity`) as min, max(`capacity`) as max from carsbus'
+            );
+            $parametersCars['capacity'] = $capacity;
+        }
+
         $colors = [];
         $mileage = ['min' => null, 'max' => 0];
         $year = ['min' => null, 'max' => 0];
@@ -104,6 +118,8 @@ class DepartmentModel extends AppModel {
 
         $parametersCars['brands'] = $brands;
 
+
+        //debug($parametersCars);
 
         $this->parametersCars = (object) $parametersCars;
     }

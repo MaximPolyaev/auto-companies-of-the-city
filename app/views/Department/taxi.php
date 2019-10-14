@@ -164,7 +164,7 @@
                                     <div class="form-group-car">
                                         <hr class="my-1">
                                         <select class="custom-select form-group-car_select select-car_mark" name="carMarka1">
-                                            <option selected>Не выбрано</option>
+                                            <option selected value="no">Не выбрано</option>
                                             <option value="alias1">Рено</option>
                                             <option value="alias2">Лада</option>
                                             <option value="alias3">Аиди</option>

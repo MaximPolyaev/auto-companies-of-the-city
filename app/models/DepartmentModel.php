@@ -4,6 +4,8 @@
 namespace app\models;
 
 
+use enterprices\Converter;
+use MongoDB\BSON\ObjectId;
 use RedBeanPHP\R;
 
 class DepartmentModel extends AppModel {
@@ -14,13 +16,15 @@ class DepartmentModel extends AppModel {
     private $parametersCars;
     private $parametersDrivers;
 
-    public function __construct($route) {
+    public function __construct($route, $ajax = false) {
         $this->controller = $route['controller'];
         $this->view = $route['action'];
-        $this->driversInit();
-        $this->carsInit();
-        $this->parametersDriversInit();
-        $this->parametersCarsInit();
+        if(!$ajax) {
+            $this->driversInit();
+            $this->carsInit();
+            $this->parametersDriversInit();
+            $this->parametersCarsInit();
+        }
     }
 
     public function getDrivers() {
@@ -185,5 +189,67 @@ class DepartmentModel extends AppModel {
             $car = (object) $car;
         }
         $this->cars = $cars;
+    }
+
+    public function getCards($data, $typeCards) {
+        function getTaxiCards($data) {
+            $sqlData = [];
+            $sqlData['bodytype'] = isset($data['bodytype']) ? $data['bodytype'] : 'no';
+            $sqlData['color'] = isset($data['color']) ? $data['color'] : 'no';
+
+            $mileage = isset($data['mileage']) ? Converter::getFromTo($data['mileage']) : null;
+            $sqlData['mileage_from'] = isset($mileage->from) ? (int) $mileage->from : 0;
+            $sqlData['mileage_to'] = isset($mileage->to) ? (int) $mileage->to : 0;
+
+            $flights = isset($data['flights']) ? Converter::getFromTo($data['flights']) : null;
+            $sqlData['flights_from'] = isset($flights->from) ? (int) $flights->from : 0; // 33 - 150
+            $sqlData['flights_to'] = isset($flights->to) ? (int) $flights->to : 0;
+
+            $sqlData['date_flight_from'] = isset($data['dateflightfrom']) ? Converter::toDbDate($data['dateflightfrom']) : date('Y-m-d');
+            $sqlData['date_flight_to'] = isset($data['dateflightto']) ? Converter::toDbDate($data['dateflightto']) : date('Y-m-d');
+
+            $createYear = isset($data['year']) ? Converter::getFromTo($data['year']) : null;
+            $sqlData['create_year_from'] = isset($createYear->from) ? (int) $createYear->from : 0;
+            $sqlData['create_year_to'] = isset($createYear->to) ? (int) $createYear->to : 0;
+
+            $marks = [];
+            $models = [];
+            for($i = 0; $i < count(isset($data['cars']) ? $data['cars'] : 0); $i++) {
+                $marks[$i] = Converter::getFromTo($data['cars'][$i])->from;
+                $models[$i] = Converter::getFromTo($data['cars'][$i])->to;
+            }
+            $marks['str'] = implode(', ', $marks);
+            $models['str'] = implode(', ', $models);
+
+
+            $sqlQuery = "select * 
+                            from cars 
+                            where ? <= mileage and mileage <= ?";
+
+            $sqlQuery .= $sqlData['color'] !== 'no' ? " and color = '" . $sqlData['color'] ."'" : '';
+
+            $sqlQuery .= " and position = 'car_taxi'";
+
+            $cars = R::getAll($sqlQuery,
+                [
+                    $sqlData['mileage_from'],
+                    $sqlData['mileage_to']
+                ]
+            );
+
+
+
+            var_dump($cars);
+            echo PHP_EOL;
+        }
+
+        switch($typeCards) {
+            case "taxicards":
+                $data = getTaxiCards($data);
+        }
+
+
+        $data = '';
+        return $data;
     }
 }

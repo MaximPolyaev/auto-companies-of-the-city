@@ -318,7 +318,7 @@
                             машину</a>
                         <div class="params-panel p-2 border rounded">
                             <h5 class="text-info us-none">Параметры</h5>
-                            <form class="params-panel-form">
+                            <form class="params-panel-form" data-status="taxi" data-format="cars">
                                 <div class="form-group">
                                     <h6 class="mb-0 us-none">Выбор машины:</h6>
                                     <div class="form-group-car">
@@ -345,7 +345,7 @@
                                 <div class="form-group">
                                     <h6 class="mb-1 us-none">Цвет машины:</h6>
                                     <select class="custom-select" name="color">
-                                        <option selected>Не выбрано</option>
+                                        <option selected value="no">Не выбрано</option>
                                         <?php foreach($parametersCars->colors as $color): ?>
                                             <option value="<?= $color ?>"><?= mb_ucfirst($color) ?></option>
                                         <?php endforeach; ?>
@@ -361,7 +361,7 @@
                                 </div>
                                 <div class="form-group slider-range">
                                     <h6 class="mb-0 us-none">Кол-во рейсов:</h6>
-                                    <input class="form-control form-control-sm mt-1 slider-range-input" name="carFlights">
+                                    <input class="form-control form-control-sm mt-1 slider-range-input" name="flights">
                                     <div class="mx-2 mt-2 cp slider-range-controls" data-min="1" data-max="150"></div>
                                 </div>
                                 <div class="form-group">
@@ -371,14 +371,15 @@
                                             <label class="input-group-text us-none">От:</label>
                                         </div>
                                         <input class="form-control d-inline-block bg-white cp" id="dateCarFlightFrom" type="text"
-                                               autocomplete="off" readonly>
+                                               autocomplete="off" readonly name="dateflightfrom">
                                     </div>
                                     <div class="input-group input-group-sm mt-1">
                                         <div class="input-group-prepend">
                                             <label class="input-group-text us-none">До:</label>
                                         </div>
+                                        <!-- TODO: edit id form date car flights -->
                                         <input class="form-control d-inline-block bg-white cp" id="dateCarFlightTo" type="text"
-                                               autocomplete="off" readonly>
+                                               autocomplete="off" readonly name="dateflightto">
                                     </div>
                                 </div>
                                 <div class="form-group slider-range">

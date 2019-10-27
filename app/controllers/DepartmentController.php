@@ -14,9 +14,16 @@ class DepartmentController extends AppController {
 
     public function __construct($route) {
         parent::__construct($route);
+
         // Initialize car body types
         App::$app->setProperty('body_types_cars', self::cacheBodyTypesCar());
-        $this->departmentModel = new DepartmentModel($this->route);
+        $this->departmentModel = new DepartmentModel($this->route, $this->isAjax());
+
+        if($this->isAjax()) {
+            $cards = $this->departmentModel->getCards($_GET, $this->view);
+            $this->loadView($this->view, compact('cards'));
+            die;
+        }
 
         // drivers and cars
         $drivers = $this->departmentModel->getDrivers();
@@ -30,13 +37,6 @@ class DepartmentController extends AppController {
             $modificator = $this->route['modificator'];
             $this->set(compact('modificator'));
         }
-
-        // if isAjax query
-        if($this->isAjax()) {
-            debug('isAjax');
-            die;
-        }
-
 
         // Add modals windows on page
         $addModalDriver = (new AddModalDriver($this->route))->getData();

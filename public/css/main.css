@@ -94,7 +94,7 @@ body {
     text-decoration: none; }
 
 .header {
-  background-color: #605CA8;
+  background-color: #4b4848;
   height: 50px; }
   .header-logo {
     display: inline-block;
@@ -102,7 +102,7 @@ body {
     font-weight: 700;
     font-size: 22px;
     line-height: 50px;
-    background-color: #555299;
+    background-color: #403d3d;
     text-align: center;
     width: 300px;
     white-space: nowrap; }

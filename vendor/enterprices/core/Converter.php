@@ -16,4 +16,10 @@ class Converter {
         $replacement = '7${1}${2}${3}${4}';
         return preg_replace($regexp, $replacement, $phone);
     }
+
+    public static function getFromTo($string) {
+        $regexp = '/^(?P<from>\w+)\s-\s(?P<to>\w+)$/iu';
+        preg_match($regexp, $string, $matches);
+        return (object) $matches;
+    }
 }

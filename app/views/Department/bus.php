@@ -295,7 +295,7 @@
                             автобус</a>
                         <div class="params-panel p-2 border rounded">
                             <h5 class="text-info us-none">Параметры</h5>
-                            <form class="params-panel-form">
+                            <form class="params-panel-form" data-status="bus">
                                 <div class="form-group">
                                     <h6 class="mb-0 us-none">Выбор машины:</h6>
                                     <div class="form-group-car">

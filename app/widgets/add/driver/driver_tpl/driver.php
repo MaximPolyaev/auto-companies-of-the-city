@@ -71,7 +71,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Номер телефона (+7 ... ):</div>
                             </div>
-                            <input class="form-control" type="text" name="phone">
+                            <input class="form-control input-phone" type="text" name="phone" placeholder="+7 (xxx) xxx-xx-xx">
                         </div>
                     </div>
                     <div class="form-group form-input-car">

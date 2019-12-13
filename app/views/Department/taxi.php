@@ -214,7 +214,7 @@
                         </form>
                         <h3 class="mt-2">Автомобили</h3>
                         <hr class="mt-0">
-                        <div class="row">
+                        <div class="row cards">
                             <!-- add cars taxi -->
                             <?php if($cars) : ?>
                                 <?php foreach($cars as $car): ?>

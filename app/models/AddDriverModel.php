@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\models;
 
 
@@ -72,7 +71,7 @@ class AddDriverModel extends AppModel {
         if(Validator::isPhone(isset($_GET['phone']) ? $_GET['phone'] : '')) {
             $this->data['number_phone'] = Converter::toDbPhone($_GET['phone']);
         } else {
-            $this->errorList['errors'][] = 'Введен некоректный номер телефоа';
+            $this->errorList['errors'][] = 'Введен некоректный номер телефона';
         }
 
         if(isset($_GET['address']) && !empty($_GET['address'])) {

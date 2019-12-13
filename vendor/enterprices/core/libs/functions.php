@@ -63,3 +63,42 @@ function messageBox($string, $format = 'danger') {
                     </button>
                 </div>';
 }
+
+function debugDBTable($arr) {
+    if(empty($arr)) {
+        echo "Пустой массив";
+        return;
+    }
+    $headers = '<th scope="col">#</th>';
+    foreach($arr[0] as $key => $value) {
+        $headers .= '<th scope="col">' . $key . '</th>';
+    }
+
+    $tr_items = [];
+    for($i = 0; $i < count($arr); $i++) {
+        $tr_items[$i] = "<th scope=\"row\">${i}</th>";
+        foreach($arr[$i] as $key => $value) {
+            $tr_items[$i] .= "<td>${value}</td>";
+        }
+    }
+
+    $tr_str = '';
+    foreach($tr_items as $item) {
+        $tr_str .= "<tr>";
+        $tr_str .= $item;
+        $tr_str .= "</tr>";
+    }
+
+    $htmlTable = "<table class=\"table table-striped\">
+            <thead>
+                <tr>
+                  ${headers}
+                </tr>
+            </thead>
+            <tbody>
+                ${tr_str}
+            </tbody>
+        </table>";
+
+    echo $htmlTable;
+}

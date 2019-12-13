@@ -5,7 +5,6 @@ namespace app\models;
 
 
 use enterprices\Converter;
-use MongoDB\BSON\ObjectId;
 use RedBeanPHP\R;
 
 class DepartmentModel extends AppModel {
@@ -45,15 +44,17 @@ class DepartmentModel extends AppModel {
 
     private function parametersDriversInit() {
 
-        $age_interval = R::getRow('select min(`birthday`) as max, max(`birthday`) as min from drivers where position = ?', ['driver_' . $this->view]);
+        $age_interval = R::getRow('select min(`birthday`) as max, max(`birthday`) as min from drivers where position = ?',
+            ['driver_' . $this->view]);
         $age_interval['min'] = new \DateTime($age_interval['min']);
         $age_interval['max'] = new \DateTime($age_interval['max']);
         $age_interval['min'] = $age_interval['min']->diff(new \DateTime)->y;
         $age_interval['max'] = $age_interval['max']->diff(new \DateTime)->y;
 
-        $work_experience = R::getRow('select min(`date_experience`) as min, max(`date_experience`) as max from drivers where position = ?', ['driver_' . $this->view]);
+        $work_experience = R::getRow('select min(`date_experience`) as min, max(`date_experience`) as max from drivers where position = ?',
+            ['driver_' . $this->view]);
 
-        $this->parametersDrivers = (object) compact('age_interval', 'work_experience');
+        $this->parametersDrivers = (object)compact('age_interval', 'work_experience');
     }
 
     private function parametersCarsInit() {
@@ -125,7 +126,7 @@ class DepartmentModel extends AppModel {
 
         //debug($parametersCars);
 
-        $this->parametersCars = (object) $parametersCars;
+        $this->parametersCars = (object)$parametersCars;
     }
 
     private function driversInit() {
@@ -140,7 +141,7 @@ class DepartmentModel extends AppModel {
             } else {
                 $driver['number_phone'] = '';
             }
-            $driver = (object) $driver;
+            $driver = (object)$driver;
         }
         $this->drivers = $drivers;
     }
@@ -186,70 +187,253 @@ class DepartmentModel extends AppModel {
             if($this->view === 'bus') {
                 $car['capacity'] = getBusCapacity($key);
             }
-            $car = (object) $car;
+            $car = (object)$car;
         }
         $this->cars = $cars;
     }
 
     public function getCards($data, $typeCards) {
-        function getTaxiCards($data) {
-            $sqlData = [];
-            $sqlData['bodytype'] = isset($data['bodytype']) ? $data['bodytype'] : 'no';
-            $sqlData['color'] = isset($data['color']) ? $data['color'] : 'no';
-
-            $mileage = isset($data['mileage']) ? Converter::getFromTo($data['mileage']) : null;
-            $sqlData['mileage_from'] = isset($mileage->from) ? (int) $mileage->from : 0;
-            $sqlData['mileage_to'] = isset($mileage->to) ? (int) $mileage->to : 0;
-
-            $flights = isset($data['flights']) ? Converter::getFromTo($data['flights']) : null;
-            $sqlData['flights_from'] = isset($flights->from) ? (int) $flights->from : 0; // 33 - 150
-            $sqlData['flights_to'] = isset($flights->to) ? (int) $flights->to : 0;
-
-            $sqlData['date_flight_from'] = isset($data['dateflightfrom']) ? Converter::toDbDate($data['dateflightfrom']) : date('Y-m-d');
-            $sqlData['date_flight_to'] = isset($data['dateflightto']) ? Converter::toDbDate($data['dateflightto']) : date('Y-m-d');
-
-            $createYear = isset($data['year']) ? Converter::getFromTo($data['year']) : null;
-            $sqlData['create_year_from'] = isset($createYear->from) ? (int) $createYear->from : 0;
-            $sqlData['create_year_to'] = isset($createYear->to) ? (int) $createYear->to : 0;
-
-            $marks = [];
-            $models = [];
-            for($i = 0; $i < count(isset($data['cars']) ? $data['cars'] : 0); $i++) {
-                $marks[$i] = Converter::getFromTo($data['cars'][$i])->from;
-                $models[$i] = Converter::getFromTo($data['cars'][$i])->to;
-            }
-            $marks['str'] = implode(', ', $marks);
-            $models['str'] = implode(', ', $models);
-
-
-            $sqlQuery = "select * 
-                            from cars 
-                            where ? <= mileage and mileage <= ?";
-
-            $sqlQuery .= $sqlData['color'] !== 'no' ? " and color = '" . $sqlData['color'] ."'" : '';
-
-            $sqlQuery .= " and position = 'car_taxi'";
-
-            $cars = R::getAll($sqlQuery,
-                [
-                    $sqlData['mileage_from'],
-                    $sqlData['mileage_to']
-                ]
-            );
-
-
-
-            var_dump($cars);
-            echo PHP_EOL;
-        }
-
         switch($typeCards) {
-            case "taxicards":
-                $data = getTaxiCards($data);
+            case "taxi" :
+                $data = $this->getCarCards($data);
+                break;
+        }
+        return (object)$data;
+    }
+
+
+    private function getCarCards($data) {
+        /**
+         * TODO: add number flights
+         * TODO: add data flights
+         */
+
+        // Получаем sql - данные
+        $sqlData = $this->getSqlDataCar($data);
+
+        // Создаем sql запрос таблицы машин
+        $sqlQueryTableCars = $this->getSqlQueryTableCars($sqlData['select_cars'], $sqlData['type_car']);
+
+        // Инициализация sql запроса
+        $sqlQuery = "select * from (${sqlQueryTableCars}) as cars";
+
+        debug($sqlData);
+
+        // sql дополнения и sql параметры
+        $sqlQueryAdditions = [];
+        $sqlQueryParams = [];
+
+        // Пробег
+        $sqlQueryAdditions[] = "mileage >= :milfrom and mileage <= :milto";
+        $sqlQueryParams[':milfrom'] = $sqlData['mileage_from'];
+        $sqlQueryParams[':milto'] = $sqlData['mileage_to'];
+
+        $sqlQueryAdditions[] = 'and create_year >= :cryaerfrom and create_year <= :cryaerto';
+        $sqlQueryParams[':cryaerfrom'] = $sqlData['create_year_from'];
+        $sqlQueryParams[':cryaerto'] = $sqlData['create_year_to'];
+
+        // Цвет
+        if($sqlData['color'] !== 'no') {
+            $sqlQueryAdditions[] = 'and color = :color';
+            $sqlQueryParams[':color'] = $sqlData['color'];
         }
 
+        // Дополнение sql запроса
+        $sqlQuery .= ' where';
+        for($i = 0; $i < count($sqlQueryAdditions); $i++) {
+            $add = $sqlQueryAdditions[$i];
+            $sqlQuery .= " ${add}";
+        }
 
-        $data = '';
-        return $data;
+        //debug($sqlQuery);
+
+
+        $cars = R::getAll($sqlQuery, $sqlQueryParams);
+
+
+        debugDBTable($cars);
+        return $cars;
+    }
+
+    private function getDataSelectCars($cars) {
+        function str($arr) {
+            if(count($arr) === 1 && $arr[0] === 'no') {
+                return 'no';
+            } elseif(count($arr) === 1) {
+                return "'${arr[0]}'";
+            }
+
+            $str = "'";
+            foreach($arr as $i => $value) {
+                if($i === count($arr) - 1)
+                    $str .= "${value}'";
+                else
+                    $str .= "${value}', '";
+            }
+            return $str;
+        }
+
+        // default array
+        $selectCars = [
+            'marks' => ['no'],
+            'models' => ['no'],
+            'cache' => [],
+            'all_models' => ['no'],
+            'marks_str' => 'no',
+            'models_str' => 'no',
+            'all_models_str' => 'no'
+        ];
+
+        // Если машины не пришли возращаем стандартный массив
+        if(count($cars) == 1 && $cars[0] === 'no - no') {
+            unset($selectCars['cache']);
+            unset($selectCars['marks']);
+            unset($selectCars['models']);
+            unset($selectCars['all_models']);
+            return $selectCars;
+        }
+
+        // Добавляем массив всех машин
+        for($i = 0; $i < count($cars); $i++) {
+            $car = Converter::getFromTo($cars[$i]);
+
+            if($car->from === 'no') continue;
+
+            $selectCars['cache'][$i]['mark'] = $car->from;
+            $selectCars['cache'][$i]['model'] = $car->to;
+        }
+
+        // Добавляем машины без марок
+        unset($selectCars['all_models']);
+        foreach($selectCars['cache'] as $car) {
+            if($car['model'] === 'no') {
+                $selectCars['all_models'][] = $car['mark'];
+            }
+        }
+        if(!isset($selectCars['all_models'])) $selectCars['all_models'] = ['no'];
+
+        // Добавляем марки с моделями
+        unset($selectCars['marks']);
+        unset($selectCars['models']);
+        foreach($selectCars['cache'] as $car) {
+            if(!in_array($car['mark'], $selectCars['all_models'])) {
+                $selectCars['marks'][] = $car['mark'];
+                $selectCars['models'][] = $car['model'];
+            }
+        }
+        if(!isset($selectCars['marks'])) {
+            $selectCars['marks'] = ['no'];
+            $selectCars['models'] = ['no'];
+        }
+
+        // удаляем кэш
+        unset($selectCars['cache']);
+
+        // только уникальные значения
+        $selectCars['marks'] = array_unique($selectCars['marks']);
+        $selectCars['models'] = array_unique($selectCars['models']);
+        $selectCars['all_models'] = array_unique($selectCars['all_models']);
+
+        // Инициализируем строки
+        $selectCars['marks_str'] = str($selectCars['marks']);
+        $selectCars['models_str'] = str($selectCars['models']);
+        $selectCars['all_models_str'] = str($selectCars['all_models']);
+
+        // удаляем лишние данные
+        unset($selectCars['marks']);
+        unset($selectCars['models']);
+        unset($selectCars['all_models']);
+
+
+        return $selectCars;
+    }
+
+    private function getSqlQueryTableCars($selectCars, $typeCar) {
+        $sqlQueryTableCars = "select cars_old.id as id_car, cars_old.gov_num,
+            cars_old.gov_num_alias, cars_old.color,
+            cars_old.number_flights, cars_old.create_year,
+            cars_old.photo, cars_old.position,
+            cars_old.fa_icon, cars_old.repair,
+            cars_old.mileage,
+            select_car.name_mark, select_car.name_model,
+            body_types_cars.name as body_type_name,
+            body_types_cars.name_alias as body_type_alias
+            from 
+                (select marks.id as id_mark, marks.name as name_mark, models.id as id_model, models.name as name_model
+                    from car_marks as marks join car_models as models
+                           on marks.id = models.id_mark
+                    where marks.status = '${typeCar}'";
+
+        if($selectCars['marks_str'] !== 'no' && $selectCars['models_str'] !== 'no') {
+            $sqlQueryTableCars .= " and (marks.name_alias in (" . $selectCars['marks_str'] . ")";
+            if($selectCars['all_models_str'] !== 'no') {
+                $sqlQueryTableCars .= " and models.name_alias in (" . $selectCars['models_str'] . ")";
+                $sqlQueryTableCars .= " or marks.name_alias in (" . $selectCars['all_models_str'] . "))";
+            } else $sqlQueryTableCars .= " and models.name_alias in (" . $selectCars['models_str'] . "))";
+        } elseif($selectCars['marks_str'] === 'no') {
+            if($selectCars['all_models_str'] !== 'no') {
+                $sqlQueryTableCars .= " and marks.name_alias in (" . $selectCars['all_models_str'] . ")";
+            } else $sqlQueryTableCars .= '';
+        }
+        $sqlQueryTableCars .= ") as select_car join cars as cars_old
+                on select_car.id_mark = cars_old.brand and select_car.id_model = cars_old.model
+            join carstaxi
+                on carstaxi.id_car = cars_old.id
+            join body_types_cars
+                on body_types_cars.id = carstaxi.id_type_body";
+
+        return $sqlQueryTableCars;
+    }
+
+    private function getSqlDataCar($data) {
+        $sqlData = [];
+
+        // Проверка: пришли данные?
+        if(!(
+            isset($data['typecar']) &&
+            isset($data['bodytype']) &&
+            isset($data['color']) &&
+            isset($data['mileage']) &&
+            isset($data['flights']) &&
+            isset($data['dateflightfrom']) &&
+            isset($data['dateflightto']) &&
+            isset($data['year']) &&
+            isset($data['cars'])
+        )) {
+            die;
+        }
+
+        // Тип машины: грузовик или такси или автобус
+        $sqlData['type_car'] = $data['typecar'];
+
+        // Тип кузова
+        $sqlData['bodytype'] = $data['bodytype'];
+
+        // Цвет машины
+        $sqlData['color'] = $data['color'];
+
+        // Пробег машины
+        $mileage = Converter::getFromTo($data['mileage']);
+        $sqlData['mileage_from'] = isset($mileage->from) ? (int)$mileage->from : 0;
+        $sqlData['mileage_to'] = isset($mileage->to) ? (int)$mileage->to : 0;
+
+        // Количество маршрутов
+        $flights = Converter::getFromTo($data['flights']);
+        $sqlData['flights_from'] = isset($flights->from) ? (int)$flights->from : 0;
+        $sqlData['flights_to'] = isset($flights->to) ? (int)$flights->to : 0;
+
+        // Дата маршрута
+        $sqlData['date_flight_from'] = isset($data['dateflightfrom']) ? Converter::toDbDate($data['dateflightfrom']) : date('Y-m-d');
+        $sqlData['date_flight_to'] = isset($data['dateflightto']) ? Converter::toDbDate($data['dateflightto']) : date('Y-m-d');
+
+        // Дата года выпуска машины
+        $createYear = Converter::getFromTo($data['year']);
+        $sqlData['create_year_from'] = isset($createYear->from) ? (int)$createYear->from : 0;
+        $sqlData['create_year_to'] = isset($createYear->to) ? (int)$createYear->to : 0;
+
+        // Выбранные машины
+        $sqlData['select_cars'] = $this->getDataSelectCars($data['cars']);
+
+        return $sqlData;
     }
 }

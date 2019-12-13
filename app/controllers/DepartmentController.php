@@ -21,7 +21,7 @@ class DepartmentController extends AppController {
 
         if($this->isAjax()) {
             $cards = $this->departmentModel->getCards($_GET, $this->view);
-            $this->loadView($this->view, compact('cards'));
+            $this->loadView($this->view . 'cards', compact('cards'));
             die;
         }
 
